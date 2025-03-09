@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Request #{{ refund_request.id }}</h2>
+<p><strong>Status:</strong> {{ refund_request.status }}</p>
+<p><strong>Order number:</strong> {{ refund_request.order_number }}</p>
+<p><strong>Order date:</strong> {{ refund_request.order_date }}</p>
+<p><strong>Products:</strong> {{ refund_request.products }}</p>
+<p><strong>Reason:</strong> {{ refund_request.reason }}</p>
+{% endblock %}

@@ -46,6 +46,7 @@ PROJECT_APPS = ["apps.accounts", "apps.refunds"]
 
 THIRD_PARTY_APPS = [
     "rest_framework",
+    "import_export",
 ]
 
 INSTALLED_APPS = THIRD_PARTY_APPS + PROJECT_APPS + DJANGO_APPS
@@ -150,3 +151,9 @@ CACHES = {
         "LOCATION": "unique-snowflake",
     }
 }
+
+# IMPORT_EXPORT_SETTINGS
+# https://django-import-export.readthedocs.io/en/latest/installation.html
+
+IMPORT_EXPORT_SKIP_ADMIN_LOG = True
+IMPORT_EXPORT_IMPORT_IGNORE_BLANK_LINES = True

@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>My refunds</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Order number</th>
+            <th>Status</th>
+            <th>Creation date</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for refund in refund_requests %}
+        <tr>
+            <td><a href="{% url 'refund_detail' refund.pk %}">{{ refund.id }}</a></td>
+            <td>{{ refund.order_number }}</td>
+            <td>{{ refund.status }}</td>
+            <td>{{ refund.created_at }}</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

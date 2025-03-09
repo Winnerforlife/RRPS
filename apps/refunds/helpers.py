@@ -1,6 +1,7 @@
 import requests
 from decouple import config
 from django.core.cache import cache
+from django.core.mail import send_mail
 
 
 def validate_iban(iban):
@@ -45,3 +46,38 @@ def validate_iban(iban):
     # Cache the result for 1 hour (3600 seconds)
     cache.set(cache_key, result, 3600)
     return result
+
+
+def send_notification_email(
+    subject, message, recipient_list, from_email=None, fail_silently=False, **kwargs
+):
+    """
+    Sends an email notification using settings from settings.py.
+
+    parametrs:
+      subject (str): Subject line.
+      message (str): Text message.
+      recipient_list (list): Recipient list (email addresses).
+      from_email (str, optional): The address of the sender. If not specified, settings.DEFAULT_FROM_EMAIL is used.
+      fail_silently (bool, optional): If True, send errors do not raise an exception.
+
+    returns:
+      int: Number of successfully sent e-mails.
+    """
+    if from_email is None:
+        from_email = config("DEFAULT_FROM_EMAIL", default="refund-info@gmail.com")
+
+    try:
+        num_sent = send_mail(
+            subject,
+            message,
+            from_email,
+            recipient_list,
+            fail_silently=fail_silently,
+            **kwargs,
+        )
+        return num_sent
+    except Exception as e:
+        if not fail_silently:
+            raise
+        return 0

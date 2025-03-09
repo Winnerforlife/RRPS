@@ -44,7 +44,11 @@ DJANGO_APPS = [
 
 PROJECT_APPS = ["apps.accounts", "apps.refunds"]
 
-INSTALLED_APPS = PROJECT_APPS + DJANGO_APPS
+THIRD_PARTY_APPS = [
+    "rest_framework",
+]
+
+INSTALLED_APPS = THIRD_PARTY_APPS + PROJECT_APPS + DJANGO_APPS
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -136,3 +140,13 @@ STATIC_URL = "static/"
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+# Local-memory caching
+# https://docs.djangoproject.com/en/4.2/topics/cache/#local-memory-caching
+
+CACHES = {
+    "default": {
+        "BACKEND": "django.core.cache.backends.locmem.LocMemCache",
+        "LOCATION": "unique-snowflake",
+    }
+}

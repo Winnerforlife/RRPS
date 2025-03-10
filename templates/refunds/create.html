@@ -1,9 +1,57 @@
 {% extends 'base.html' %}
 {% block content %}
-<h2>Create a refund request</h2>
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit" class="btn btn-primary">Submit</button>
-</form>
+<div class="container mt-5 d-flex justify-content-center">
+    <div class="card p-4 shadow-lg" style="max-width: 500px; width: 100%;">
+        <h2 class="text-center mb-4">Create a Refund Request</h2>
+        <form method="post" novalidate>
+            {% csrf_token %}
+
+            {% for field in form %}
+                <div class="mb-3">
+                    <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
+
+                    {% if field.name == "account_type" %}
+                        <!-- Fields for entering ChoiceField -->
+                        <select name="{{ field.name }}" id="{{ field.id_for_label }}" 
+                                class="form-select {% if field.errors %}is-invalid{% endif %}" 
+                                style="max-width: 400px; width: 100%;">
+                            {% for choice in field.field.choices %}
+                                <option value="{{ choice.0 }}" {% if field.value == choice.0 %}selected{% endif %}>
+                                    {{ choice.1 }}
+                                </option>
+                            {% endfor %}
+                        </select>
+
+                    {% elif field.name == "products" or field.name == "reason" %}
+                        <!-- Fields for entering TextField -->
+                        <textarea name="{{ field.name }}" id="{{ field.id_for_label }}" 
+                                  class="form-control {% if field.errors %}is-invalid{% endif %}" 
+                                  style="max-width: 400px; width: 100%;" rows="4">{{ field.value|default_if_none:'' }}</textarea>
+
+                    {% else %}
+                        <!-- Fields for entering CharField -->
+                        <input 
+                            type="{{ field.field.widget.input_type }}" 
+                            name="{{ field.name }}" 
+                            id="{{ field.id_for_label }}" 
+                            class="form-control {% if field.errors %}is-invalid{% endif %}" 
+                            value="{{ field.value|default_if_none:'' }}"
+                            style="max-width: 400px; width: 100%;"
+                        >
+                    {% endif %}
+
+                    {% if field.errors %}
+                        <div class="invalid-feedback">
+                            {{ field.errors.0 }}
+                        </div>
+                    {% endif %}
+                </div>
+            {% endfor %}
+
+            <div class="d-flex justify-content-center">
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+        </form>
+    </div>
+</div>
 {% endblock %}

@@ -20,7 +20,7 @@ class CreateRefundRequestView(LoginRequiredMixin, CreateView):
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
-        kwargs['user'] = self.request.user
+        kwargs["user"] = self.request.user
         return kwargs
 
     def form_valid(self, form):
@@ -39,7 +39,9 @@ class RefundRequestListView(LoginRequiredMixin, ListView):
     paginate_by = 10
 
     def get_queryset(self):
-        queryset = RefundRequest.objects.filter(user=self.request.user).order_by("-created_at")
+        queryset = RefundRequest.objects.filter(user=self.request.user).order_by(
+            "-created_at"
+        )
 
         if status := self.request.GET.get("status"):
             queryset = queryset.filter(status=status)

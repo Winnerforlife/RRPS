@@ -1,9 +1,43 @@
 {% extends 'base.html' %}
 {% block content %}
-<h2>Request #{{ refund_request.id }}</h2>
-<p><strong>Status:</strong> {{ refund_request.status }}</p>
-<p><strong>Order number:</strong> {{ refund_request.order_number }}</p>
-<p><strong>Order date:</strong> {{ refund_request.order_date }}</p>
-<p><strong>Products:</strong> {{ refund_request.products }}</p>
-<p><strong>Reason:</strong> {{ refund_request.reason }}</p>
+<div class="container mt-5 d-flex justify-content-center">
+    <div class="card p-4 shadow-lg" style="max-width: 600px; width: 100%;">
+        <h2 class="text-center mb-4">Request #{{ refund_request.id }}</h2>
+
+        <table class="table">
+            <tbody>
+                <tr>
+                    <th>Status:</th>
+                    <td>
+                        {% if refund_request.status == "pending" %}
+                            <span class="badge bg-warning text-dark">Pending</span>
+                        {% elif refund_request.status == "approved" %}
+                            <span class="badge bg-success">Approved</span>
+                        {% elif refund_request.status == "rejected" %}
+                            <span class="badge bg-danger">Rejected</span>
+                        {% else %}
+                            {{ refund_request.status }}
+                        {% endif %}
+                    </td>
+                </tr>
+                <tr>
+                    <th>Order number:</th>
+                    <td>{{ refund_request.order_number }}</td>
+                </tr>
+                <tr>
+                    <th>Order date:</th>
+                    <td>{{ refund_request.order_date }}</td>
+                </tr>
+                <tr>
+                    <th>Products:</th>
+                    <td>{{ refund_request.products }}</td>
+                </tr>
+                <tr>
+                    <th>Reason:</th>
+                    <td>{{ refund_request.reason }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
 {% endblock %}

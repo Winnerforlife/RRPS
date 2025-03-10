@@ -12,8 +12,8 @@ from apps.accounts.views import SignUpView
 
 
 urlpatterns = [
-    path("login/", LoginView.as_view(), name="login"),
-    path("logout/", LogoutView.as_view(), name="logout"),
+    path("login/", LoginView.as_view(next_page="/refunds/"), name="login"),
+    path("logout/", LogoutView.as_view(next_page="/accounts/login/"), name="logout"),
     path("signup/", SignUpView.as_view(), name="signup"),
     path(
         "password_reset/",

@@ -1,9 +1,49 @@
 {% extends 'base.html' %}
 {% block content %}
-<h2>Login</h2>
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit" class="btn btn-primary">Login</button>
-</form>
+<div class="container mt-5 d-flex justify-content-center">
+    <div class="card p-4 shadow-lg" style="max-width: 500px; width: 100%;">
+        <h2 class="text-center mb-4">Login</h2>
+
+        {% if form.non_field_errors %}
+            <div class="alert alert-danger text-center">
+                {{ form.non_field_errors.0 }}
+            </div>
+        {% endif %}
+
+        <form method="post" novalidate class="text-center">
+            {% csrf_token %}
+
+            {% for field in form %}
+                <div class="mb-3">
+                    <label for="{{ field.id_for_label }}" class="form-label d-block text-start mx-auto" style="max-width: 400px;">{{ field.label }}</label>
+                    <input 
+                        type="{{ field.field.widget.input_type|default:'text' }}" 
+                        name="{{ field.name }}" 
+                        id="{{ field.id_for_label }}" 
+                        class="form-control mx-auto d-block {% if field.errors %}is-invalid{% endif %}" 
+                        value="{{ field.value|default_if_none:'' }}"
+                        style="max-width: 400px; width: 100%;"
+                    >
+                    {% if field.errors %}
+                        <div class="invalid-feedback text-center">
+                            {{ field.errors.0 }}
+                        </div>
+                    {% endif %}
+                </div>
+            {% endfor %}
+
+            <!-- signup link -->
+            <div class="mb-2">
+                <a href="{% url 'signup' %}" class="btn btn-link">Don't have an account? Sign up here</a>
+            </div>
+
+            <!-- password reset link -->
+            <div class="mb-3">
+                <a href="{% url 'password_reset' %}" class="btn btn-link text-danger">Forgot your password?</a>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Login</button>
+        </form>
+    </div>
+</div>
 {% endblock %}

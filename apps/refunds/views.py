@@ -39,7 +39,12 @@ class RefundRequestListView(LoginRequiredMixin, ListView):
     paginate_by = 10
 
     def get_queryset(self):
-        return RefundRequest.objects.filter(user=self.request.user)
+        queryset = RefundRequest.objects.filter(user=self.request.user).order_by("-created_at")
+
+        if status := self.request.GET.get("status"):
+            queryset = queryset.filter(status=status)
+
+        return queryset
 
 
 class RefundRequestDetailView(LoginRequiredMixin, DetailView):
